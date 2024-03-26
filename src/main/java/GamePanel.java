@@ -1,11 +1,25 @@
 package main.java;
 
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import java.awt.event.*;
+
+
 public class GamePanel extends JPanel {
+
+    /* 
+    
+    Start/Stopp Button
+    Speed Button
+    Edit Modus Button
+    Generation x Label 
+
+    
+    */  
 
 	private static final long serialVersionUID = 1L;
 
@@ -56,6 +70,19 @@ public class GamePanel extends JPanel {
 	public GamePanel(int length, int width) {
 		this.length = length;
 		this.width = width;
+		this.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int fieldX = e.getX() / 20;
+				int fieldY = e.getY() / 20;
+
+				playingField[fieldX][fieldY] = playingField[fieldX][fieldY] == 1 ? 0 : 1;
+
+				repaint();
+
+			}
+		});
 
 		startUpdating();
 	}
@@ -151,8 +178,6 @@ public class GamePanel extends JPanel {
 					}
 				}
 
-				// regeln anschauen wann sie am leben bleiben und wann sie erstellt werden
-				// können
 				if (sumNeighbors > 1 && sumNeighbors < 4 && playingField[i][j] == 1) {
 					newPlayingField[i][j] = 1;
 				}
