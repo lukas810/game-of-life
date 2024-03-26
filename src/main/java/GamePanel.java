@@ -1,8 +1,11 @@
 package main.java;
 
 import java.awt.Graphics;
-import java.awt.event.MouseAdapter;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -21,12 +24,13 @@ public class GamePanel extends JPanel {
     
     */  
 
-	private static final long serialVersionUID = 1L;
+	private JLabel generationLabel;
 
 	private int length;
 	private int width;
 
 	private boolean running = false;
+	private int generation = 0;
 
 	// länge & breite überprüfen
 	private int[][] playingField = {
@@ -83,6 +87,9 @@ public class GamePanel extends JPanel {
 
 			}
 		});
+		this.setLayout(new GridBagLayout());
+		this.add(getGenerationLabel(), new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTHWEST,
+					GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
 		startUpdating();
 	}
@@ -114,6 +121,7 @@ public class GamePanel extends JPanel {
 			if (running) {
 				repaint();
 				calculateNewPlayingField();
+				generationLabel.setText("Generation: " + ++generation);
 			}
 		});
 		timer.start();
@@ -194,6 +202,15 @@ public class GamePanel extends JPanel {
 
 		playingField = newPlayingField;
 
+	}
+
+	private JLabel getGenerationLabel() {
+		if (generationLabel == null) {
+			generationLabel = new JLabel();
+			generationLabel.setText("Generation: " + generation);
+		}
+
+		return generationLabel;
 	}
 	
 	public void setRunning(boolean running) {
